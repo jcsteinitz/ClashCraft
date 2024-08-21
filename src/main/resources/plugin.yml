@@ -1,0 +1,12 @@
+name: ClashCraft
+version: '${version}'
+main: clashcraft.clashcraft.ClashCraft
+api-version: '1.21'
+authors: [MrPandaBear]
+description: Clash Royale in Minecraft.
+
+commands:
+  test:
+    description: ClashCraft testing command.
+    usage: /test
+    permission: clashcraft.admin
