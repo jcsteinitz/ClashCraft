@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -32,8 +33,13 @@ public class PlayerHandler implements Listener {
 
     @EventHandler
     void onEntityDamage(EntityDamageEvent event) {
-        if (event.getDamage() != 9999 && (event.getCause() != EntityDamageEvent.DamageCause.KILL && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK)) {
+        if (event.getDamage() != 9999 && (event.getCause() != EntityDamageEvent.DamageCause.KILL)) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    void onArrowHit(ProjectileHitEvent event) {
+        event.setCancelled(true);
     }
 }

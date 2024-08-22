@@ -1,6 +1,6 @@
 package clashcraft.clashcraft.mobs;
 
-import clashcraft.clashcraft.util.ClashProjectile;
+import clashcraft.clashcraft.util.ClashArrow;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -15,12 +15,12 @@ public class ClashSkeleton extends ClashMob {
     public void setStats() {
         setRange(6.5);
         setFirstCooldown(10);
-        setNormalCooldown(25);
+        setNormalCooldown(35);
     }
 
     @Override
     public void attack() {
-        new ClashProjectile(this, getDummy().getLocation(), getTarget().getDummy(), null);
+        new ClashArrow(this, getDummy().getLocation().add(0,1,0), getTarget().getDummy(), null);
     }
 
     @Override
@@ -30,6 +30,7 @@ public class ClashSkeleton extends ClashMob {
         LeatherArmorMeta meta = (LeatherArmorMeta) leatherHelmet.getItemMeta();
         if (meta != null) {
             meta.setColor(getPlayer().getColor());
+            meta.setUnbreakable(true);
             leatherHelmet.setItemMeta(meta);
         }
         Objects.requireNonNull(skeleton.getEquipment()).setHelmet(leatherHelmet);
