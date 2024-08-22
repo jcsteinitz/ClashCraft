@@ -166,11 +166,9 @@ public abstract class ClashMob {
     }
 
     public void killProjectiles() {
-        if (!(this.projectiles.isEmpty())) {
-            List<ClashProjectile> toRemove = new ArrayList<>(this.projectiles);
-            for (ClashProjectile projectile : toRemove) {
-                projectile.kill(false);
-            }
+        List<ClashProjectile> toRemove = new ArrayList<>(this.projectiles);
+        for (ClashProjectile projectile : toRemove) {
+            projectile.kill(false);
         }
     }
 
