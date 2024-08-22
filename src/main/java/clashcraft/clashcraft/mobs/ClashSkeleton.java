@@ -20,7 +20,7 @@ public class ClashSkeleton extends ClashMob {
 
     @Override
     public void attack() {
-        new ClashProjectile(getDummy().getLocation(), getTarget().getDummy(), null);
+        new ClashProjectile(this, getDummy().getLocation(), getTarget().getDummy(), null);
     }
 
     @Override

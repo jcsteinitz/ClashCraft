@@ -32,7 +32,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler
     void onEntityDamage(EntityDamageEvent event) {
-        if (event.getDamage() != 9999 && event.getCause() != EntityDamageEvent.DamageCause.KILL) {
+        if (event.getDamage() != 9999 && (event.getCause() != EntityDamageEvent.DamageCause.KILL && event.getCause() != EntityDamageEvent.DamageCause.FIRE_TICK)) {
             event.setCancelled(true);
         }
     }

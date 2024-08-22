@@ -1,6 +1,7 @@
 package clashcraft.clashcraft.util;
 
 import clashcraft.clashcraft.ClashCraft;
+import clashcraft.clashcraft.mobs.ClashMob;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -11,11 +12,14 @@ import org.bukkit.util.Vector;
 import java.util.Objects;
 
 public class ClashProjectile {
+    private final ClashMob shooter;
     private final Entity target;
     private final BukkitRunnable runnable;
     private final ArmorStand tracer;
 
-    public ClashProjectile(Location location, Entity target, BukkitRunnable runnable) {
+    public ClashProjectile(ClashMob shooter, Location location, Entity target, BukkitRunnable runnable) {
+        this.shooter = shooter;
+        this.shooter.addProjectile(this);
         this.target = target;
         this.runnable = runnable;
 
@@ -26,7 +30,7 @@ public class ClashProjectile {
     }
 
     private void shoot() {
-        // TODO KILL PROJECTILES WHEN MATCH ENDS/SERVER STOP
+        ClashProjectile projectile = this;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -39,13 +43,18 @@ public class ClashProjectile {
                 tracer.setRotation((float) yaw, (float) pitch);
 
                 if (tracer.getLocation().distance(target.getLocation()) <= 0.15) {
-                    tracer.remove();
-                    if (runnable != null) {
-                        runnable.run();
-                    }
+                    kill(true);
                     this.cancel();
                 }
             }
         }.runTaskTimer(ClashCraft.getInstance(), 0L, 1L);
+    }
+
+    public void kill(boolean fire) {
+        this.tracer.remove();
+        this.shooter.removeProjectile(this);
+        if (runnable != null && fire) {
+            runnable.run();
+        }
     }
 }

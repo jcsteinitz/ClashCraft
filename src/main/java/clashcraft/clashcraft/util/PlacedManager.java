@@ -1,9 +1,11 @@
 package clashcraft.clashcraft.util;
 
 import clashcraft.clashcraft.mobs.ClashMob;
+import org.bukkit.entity.ArmorStand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PlacedManager {
     private static final HashMap<ClashPlayer, ArrayList<ClashMob>> placedMap = new HashMap<>();
@@ -33,7 +35,9 @@ public class PlacedManager {
 
     public static void killMobs(ClashPlayer player) {
         if (placedMap.get(player) != null) {
-            for (ClashMob mob : placedMap.get(player)) {
+            List<ClashMob> toRemove = new ArrayList<>(placedMap.get(player));
+            for (ClashMob mob : toRemove) {
+                mob.killProjectiles();
                 mob.kill();
             }
         }

@@ -2,6 +2,7 @@ package clashcraft.clashcraft.mobs;
 
 import clashcraft.clashcraft.ClashCraft;
 import clashcraft.clashcraft.util.ClashPlayer;
+import clashcraft.clashcraft.util.ClashProjectile;
 import clashcraft.clashcraft.util.PlacedManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class ClashMob {
@@ -29,6 +31,7 @@ public abstract class ClashMob {
     private int firstCooldown;
     private int normalCooldown;
     private int currentCooldown;
+    private ArrayList<ClashProjectile> projectiles = new ArrayList<>();
 
     public ClashMob() {
         setStats();
@@ -114,6 +117,14 @@ public abstract class ClashMob {
         }.runTaskTimer(ClashCraft.getInstance(), 0L, 1L);
     }
 
+    public void addProjectile(ClashProjectile projectile) {
+        this.projectiles.add(projectile);
+    }
+
+    public void removeProjectile(ClashProjectile projectile) {
+            this.projectiles.remove(projectile);
+    }
+
     public void resetTarget() {
         this.target = null;
         this.finder.setTarget(null);
@@ -151,6 +162,15 @@ public abstract class ClashMob {
             ((LivingEntity) this.dummy).damage(9999);
         } else {
             this.dummy.remove();
+        }
+    }
+
+    public void killProjectiles() {
+        if (!(this.projectiles.isEmpty())) {
+            List<ClashProjectile> toRemove = new ArrayList<>(this.projectiles);
+            for (ClashProjectile projectile : toRemove) {
+                projectile.kill(false);
+            }
         }
     }
 
