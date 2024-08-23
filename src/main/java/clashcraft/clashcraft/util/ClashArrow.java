@@ -12,10 +12,10 @@ import java.util.Objects;
 public class ClashArrow extends ClashProjectile{
     private final ClashMob shooter;
     private final Entity target;
-    private final BukkitRunnable runnable;
+    private final Runnable runnable;
     private final Arrow arrow;
 
-    public ClashArrow(ClashMob shooter, Location location, Entity target, BukkitRunnable runnable) {
+    public ClashArrow(ClashMob shooter, Location location, Entity target, Runnable runnable) {
         this.shooter = shooter;
         this.shooter.addProjectile(this);
         this.target = target;

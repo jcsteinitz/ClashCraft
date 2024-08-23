@@ -1,10 +1,11 @@
 package clashcraft.clashcraft.mobs;
 
+import clashcraft.clashcraft.ClashCraft;
 import clashcraft.clashcraft.util.ClashArrow;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -20,7 +21,8 @@ public class ClashSkeleton extends ClashMob {
 
     @Override
     public void attack() {
-        new ClashArrow(this, getDummy().getLocation().add(0,1,0), getTarget().getDummy(), null);
+        dummySwingArm();
+        new ClashArrow(this, getDummy().getLocation().add(0, 1, 0), getTarget().getDummy(), () -> System.out.println("TESTING: HIT!"));
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ClashSkeleton extends ClashMob {
         }
         Objects.requireNonNull(skeleton.getEquipment()).setHelmet(leatherHelmet);
         Objects.requireNonNull(skeleton.getEquipment()).setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
-        Objects.requireNonNull(skeleton.getEquipment()).setItemInMainHand(new ItemStack(Material.CROSSBOW));
+        Objects.requireNonNull(skeleton.getEquipment()).setItemInMainHand(new ItemStack(Material.BOW));
         return skeleton;
     }
 }

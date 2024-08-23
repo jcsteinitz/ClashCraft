@@ -3,7 +3,10 @@ package clashcraft.clashcraft.mobs;
 import clashcraft.clashcraft.ClashCraft;
 import clashcraft.clashcraft.util.ClashPlayer;
 import clashcraft.clashcraft.util.ClashProjectile;
+import clashcraft.clashcraft.util.DelayedTask;
 import clashcraft.clashcraft.util.PlacedManager;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -31,7 +34,7 @@ public abstract class ClashMob {
     private int firstCooldown;
     private int normalCooldown;
     private int currentCooldown;
-    private ArrayList<ClashProjectile> projectiles = new ArrayList<>();
+    private final ArrayList<ClashProjectile> projectiles = new ArrayList<>();
 
     public ClashMob() {
         setStats();
@@ -103,9 +106,11 @@ public abstract class ClashMob {
                             setFinderSpeed(0);
 
                             // Cooldown & Attack Management
-                            if (currentCooldown == 0) {
-                                attack();
-                                currentCooldown = normalCooldown;
+                            if (currentCooldown <= 1) {
+                                new DelayedTask(() -> {if (!finder.isDead()) {
+                                    attack();
+                                }}, 1);
+                                currentCooldown = normalCooldown + 1;
                             }
                             currentCooldown--;
                         }
@@ -115,6 +120,27 @@ public abstract class ClashMob {
 
 
         }.runTaskTimer(ClashCraft.getInstance(), 0L, 1L);
+    }
+
+    public void delayedAttack(Runnable runnable, int delay) {
+        new DelayedTask(() ->
+                new DelayedTask(() -> {if (!finder.isDead()) {
+                    runnable.run();
+                    }}, 1),
+                delay-1);
+    }
+
+    public void dummySwingArm() {
+        for (Player player : getDummy().getWorld().getPlayers()) {
+            PacketContainer packet = new PacketContainer(PacketType.Play.Server.ANIMATION);
+            packet.getIntegers().write(0, getDummy().getEntityId());
+            packet.getIntegers().write(1, 0);
+            try {
+                ClashCraft.getProtocolManager().sendServerPacket(player, packet);
+            } catch (Exception e) {
+                ClashCraft.log("Something went wrong with the arm swinging animation.");
+            }
+        }
     }
 
     public void addProjectile(ClashProjectile projectile) {
