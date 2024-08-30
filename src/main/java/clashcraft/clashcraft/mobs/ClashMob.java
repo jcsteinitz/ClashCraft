@@ -27,6 +27,7 @@ public abstract class ClashMob {
     private Entity dummy;
     private ClashMob target;
 
+    private double width = 0;
     private int dummyHeight = 5;
     private double speed = 0.25;
     private double range;
@@ -262,6 +263,10 @@ public abstract class ClashMob {
 
     public ClashPlayer getPlayer() {
         return this.player;
+    }
+
+    public double getWidth() {
+        return this.width;
     }
 
     public abstract void setStats();

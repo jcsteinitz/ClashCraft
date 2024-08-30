@@ -4,6 +4,7 @@ main: clashcraft.clashcraft.ClashCraft
 api-version: '1.21'
 authors: [MrPandaBear]
 description: Clash Royale in Minecraft.
+depend: [ProtocolLib]
 
 commands:
   test:

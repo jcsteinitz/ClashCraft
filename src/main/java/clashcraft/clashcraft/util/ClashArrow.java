@@ -3,6 +3,7 @@ package clashcraft.clashcraft.util;
 import clashcraft.clashcraft.ClashCraft;
 import clashcraft.clashcraft.mobs.ClashMob;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -30,7 +31,7 @@ public class ClashArrow extends ClashProjectile{
             @Override
 
             public void run() {
-                if (arrow.getLocation().distance(target.getLocation().add(0,1,0)) <= 0.35) {
+                if (arrow.getLocation().distance(target.getLocation().add(0,1,0)) <= target.getWidth() + 0.35) {
                     kill(true);
                     this.cancel();
                 }
@@ -40,7 +41,9 @@ public class ClashArrow extends ClashProjectile{
                 Location targetLocation = target.getLocation().add(0,1,0);
 
                 Vector direction = targetLocation.toVector().subtract(arrowLocation.toVector()).normalize();
-                arrow.setVelocity(direction.multiply(0.25)); // Adjust speed by multiplying the direction
+                arrow.setVelocity(direction.multiply(0.3)); // Adjust speed by multiplying the direction
+                arrow.getWorld().spawnParticle(Particle.CRIT, arrow.getLocation(), 0, 0d, 0d, 0d);
+
             }
         }.runTaskTimer(ClashCraft.getInstance(), 0L, 1L);
     }

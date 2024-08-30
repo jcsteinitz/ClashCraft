@@ -1,9 +1,7 @@
 package clashcraft.clashcraft.mobs;
 
-import clashcraft.clashcraft.ClashCraft;
 import clashcraft.clashcraft.util.ClashArrow;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.PacketContainer;
+import clashcraft.clashcraft.util.DelayedTask;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +20,10 @@ public class ClashSkeleton extends ClashMob {
     @Override
     public void attack() {
         dummySwingArm();
-        new ClashArrow(this, getDummy().getLocation().add(0, 1, 0), getTarget().getDummy(), () -> System.out.println("TESTING: HIT!"));
+        new DelayedTask(() ->
+                new ClashArrow(this, getDummy().getLocation().add(0, 1, 0).add(getDummy().getLocation().getDirection().normalize().multiply(0.25)), getTarget().getDummy(), () ->
+                        System.out.println("TESTING: HIT!")),
+                1);
     }
 
     @Override
